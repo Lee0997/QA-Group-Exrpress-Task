@@ -17,6 +17,7 @@ module.exports = {
     const todo = todos.find((todo) => todo.id == id);
     if (todo) {
       res.status(200).json(todo);
+      return;
     }
     next(new TodoNotFoundError(id));
   },

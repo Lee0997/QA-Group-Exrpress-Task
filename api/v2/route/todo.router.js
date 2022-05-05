@@ -13,9 +13,8 @@ router.put('/:id', todoController.update);
 
 router.delete('/:id', todoController.delete);
 
-router.addTag('/:id', todoController.addTag);
+router.post('/:id', todoController.addTag);
 
-router.removeTag('/:id', todoController.removeTag);
-
+router.delete('/:id', todoController.removeTag);
 
 module.exports = router;

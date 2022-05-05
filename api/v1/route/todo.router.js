@@ -5,14 +5,14 @@ const router = express.Router();
 
 
 
-router.get('/',todo-Controller.readAll);
+router.get('/',todoController.readAll);
 
-router.get('/',todo-controller.readById);
+router.get('/:id',todoController.readById);
 
-router.post('/create',todo-controller.create);
+router.post('/',todoController.create);
 
-router.put('/update', todo-controller.update);
+router.put('/:id', todoController.update);
 
-router.delete('/delete', todo-controller.delete);
+router.delete('/:id', todoController.delete);
 
 module.exports = router;

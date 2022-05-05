@@ -3,8 +3,6 @@ const todoController = require('../controller/todo-controller');
 
 const router = express.Router();
 
-
-
 router.get('/',todoController.readAll);
 
 router.get('/:id',todoController.readById);

@@ -22,7 +22,7 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    const todo = new Todo(idCounter++, req.body.name, req.body.todo, req.body.tags);
+    const todo = new Todo(idCounter++, req.body.name, req.body.task, req.body.tags);
     todos.push(todo);
     res.status(200).json(todo);
   },
@@ -33,7 +33,7 @@ module.exports = {
     const todo = todos.find((todo) => todo.id == id);
     if (todo) {
       todo.name = updates.name;
-      todo.todo = updates.todo;
+      todo.todo = updates.task;
       todo.tags = updates.tags;
       res.status(200).json(todo);
       return;

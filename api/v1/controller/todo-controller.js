@@ -37,6 +37,15 @@ module.exports = {
     },
 
     delete: (req, res, next) => {
-        
+        const id = req.params.id;
+        const todo = todos.find(todo => todo.id == id);
+
+        if (todo) {
+            const index = todos.indexOf(todo);
+            todos.splice(index, 1);
+            res.status(200).json(todo);
+            return;
+        }
+        next(new TodoNotFoundError);
     }
 }

@@ -19,7 +19,9 @@ module.exports = {
     },
 
     create: (req, res, next) => {
-        
+        const todo = new Todo(idCounter++, req.body.name);
+        todos.push(todo);
+        res.status(200).json(todo);
     },
 
     update: (req, res, next) => {

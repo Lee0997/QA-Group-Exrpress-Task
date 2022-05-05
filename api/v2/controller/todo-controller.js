@@ -53,4 +53,12 @@ module.exports = {
     }
     next(new TodoNotFoundError());
   },
+
+  addTag: (req, res, next) => {
+
+  },
+
+  removeTag: (req, res, next) => {
+
+  }
 };

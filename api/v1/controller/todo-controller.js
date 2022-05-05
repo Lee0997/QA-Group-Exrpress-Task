@@ -10,7 +10,12 @@ module.exports = {
     },
     
     readById: (req, res, next) => {
-        
+        const id = req.params.id;
+        const todo = todos.find(todo => todo.id == id);
+        if (todo) {
+            res.status(200).json(todo);
+        }
+        next(new TodoNotFoundError(id));
     },
 
     create: (req, res, next) => {

@@ -55,7 +55,13 @@ module.exports = {
   },
 
   addTag: (req, res, next) => {
-
+    const id = req.params.id;
+    const newTag = req.body.tags;
+    const todo = todos.find((todo) => todo.id == id);
+    if (todo) {
+      todos.push(newTag);
+      res.status(200).json(todo);
+    }
   },
 
   removeTag: (req, res, next) => {

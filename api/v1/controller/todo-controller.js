@@ -6,7 +6,7 @@ const todos = [new Todo(1, "Alfred", "Buy groceries"), new User(2, "Jim", "Clean
 
 module.exports = {
     readAll: (req, res, next) => {
-        
+        res.status(200).json(todos);
     },
     
     readById: (req, res, next) => {

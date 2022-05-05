@@ -25,7 +25,15 @@ module.exports = {
     },
 
     update: (req, res, next) => {
-        
+        const id = req.params.id;
+        const updates = req.body;
+        const todo = todos.find(todo => todo.id == id);
+        if (todo) {
+            todo.name = updates.name;
+            res.status(200).json(todo);
+            return;
+        }
+        next(new TodoNotFoundError(id));
     },
 
     delete: (req, res, next) => {

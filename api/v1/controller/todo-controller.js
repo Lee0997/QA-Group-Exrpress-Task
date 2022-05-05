@@ -2,7 +2,7 @@ const TodoNotFoundError = require('../errors/todo-not-found-error');
 const Todo = require('../model/todo');
 
 let idCounter = 1;
-const todos = [new Todo(1, "Alfred", "Buy groceries"), new User(2, "Jim", "Clean up")];
+const todos = [new Todo(1, "Alfred", "Buy groceries"), new Todo(2, "Jim", "Clean up")];
 
 module.exports = {
     readAll: (req, res, next) => {

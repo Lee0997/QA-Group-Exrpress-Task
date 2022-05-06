@@ -34,7 +34,7 @@ module.exports = {
     }
   },
 
-  update: (req, res, next) => {
+  update: async (req, res, next) => {
     const id = req.params.id;
     const updates = req.body;
 
@@ -47,7 +47,7 @@ module.exports = {
     next(new TodoNotFoundError(id));
   },
 
-  delete: (req, res, next) => {
+  delete: async (req, res, next) => {
     const id = req.params.id;
     const condition = { _id: id }
     const todo = await Todo.findOneAndDelete(condition);

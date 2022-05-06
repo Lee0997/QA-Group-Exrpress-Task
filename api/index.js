@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const HttpError = require("./v1/errors/http-error");
 const todoRouter = require("./v1/route/todo.router");
 const todoRouterV2 = require("./v2/route/todo.router");
+const TodoNotFoundError = require("./v1/errors/todo-not-found-error");
 
 const DB_URI = process.env.DB_URI || "mongodb://127.0.0.1:27017/todo-app";
 const PORT = process.env.PORT || 3000;
@@ -30,8 +31,12 @@ app.use((error, request, response, next) => {
   console.error(error.message);
 
   if (!(error instanceof HttpError)) {
-    // Check for errors here, or default to 500 internal server error
-    error = new HttpError(new Error("Something went wrong..."), 500);
+    if (error instanceof TodoNotFoundError) {
+      error = new HttpError(error, 404);
+    } else {
+      // unknown error
+      error = new HttpError(new Error("Something went wrong..."), 500);
+    }
   }
   // It must be a HTTP error to have reached here, whether that was passed to error, or created
   // above
@@ -40,6 +45,7 @@ app.use((error, request, response, next) => {
     data: error.data,
   });
 });
+
 
 async function main() {
   await mongoose
@@ -55,3 +61,5 @@ async function main() {
     console.log(`Server up on ${PORT}`);
   });
 }
+
+main();

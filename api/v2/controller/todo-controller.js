@@ -23,7 +23,12 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    const todo = new Todo(idCounter++, req.body.name, req.body.task, req.body.tags);
+    const todo = new Todo(
+      idCounter++,
+      req.body.name,
+      req.body.task,
+      req.body.tags
+    );
     todos.push(todo);
     res.status(200).json(todo);
   },
@@ -65,7 +70,5 @@ module.exports = {
     }
   },
 
-  removeTag: (req, res, next) => {
-
-  }
+  removeTag: (req, res, next) => {},
 };

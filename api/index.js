@@ -4,6 +4,7 @@ const HttpError = require("./v1/errors/http-error");
 const todoRouter = require("./v1/route/todo.router");
 const todoRouterV2 = require("./v2/route/todo.router");
 
+const DB_URI = process.env.DB_URI || "mongodb://127.0.0.1:27017/todo-app";
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -40,7 +41,17 @@ app.use((error, request, response, next) => {
   });
 });
 
-// Start the server
-const server = app.listen(PORT, function () {
-  console.log(`Server up on ${PORT}`);
-});
+async function main() {
+  await mongoose
+    .connect(DB_URI, { useNewUrlParser: true })
+    .then(() => console.log(`Database connected: ${DB_URI}`));
+
+  const db = mongoose.connection;
+
+  db.on("error", console.error.bind(console, "MongoDB connection error"));
+  db.on("connection", console.log.bind(console, "MongoDB connected"));
+
+  const server = app.listen(PORT, function () {
+    console.log(`Server up on ${PORT}`);
+  });
+}

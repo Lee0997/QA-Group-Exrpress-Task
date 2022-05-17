@@ -1,54 +1,60 @@
+const { json } = require("express");
 const TodoNotFoundError = require("../errors/todo-not-found-error");
-const Todo = require("../model/todo");
+const Todo = require("../model/todo.js");
 
-let idCounter = 3;
 const todos = [
-  new Todo(1, "Alfred", "Buy groceries"),
-  new Todo(2, "Jim", "Clean up"),
+  new Todo({ name: "John", todo: "Remove rubbish" }),
+  new Todo({ name: "Jim", todo: "Clean up" })
 ];
 
 module.exports = {
-  readAll: (req, res, next) => {
+  readAll: async (req, res, next) => {
+    const todos = await Todo.find({});
     res.status(200).json(todos);
   },
 
-  readById: (req, res, next) => {
+  readById: async (req, res, next) => {
     const id = req.params.id;
-    const todo = todos.find((todo) => todo.id == id);
+    const todo = Todo.findById(id);
     if (todo) {
       res.status(200).json(todo);
+      return;
     }
     next(new TodoNotFoundError(id));
   },
 
-  create: (req, res, next) => {
-    const todo = new Todo(idCounter++, req.body.name, req.body.todo);
-    todos.push(todo);
-    res.status(200).json(todo);
+  create: async (req, res, next) => {
+    const todo = new Todo(req.body);
+
+    try {
+      await todo.save();
+      res.status(200).json(todo);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  update: (req, res, next) => {
+  update: async (req, res, next) => {
     const id = req.params.id;
     const updates = req.body;
-    const todo = todos.find((todo) => todo.id == id);
+
+    const todo = await Todo.updateOne({ _id: id }, updates);
+
     if (todo) {
-      todo.name = updates.name;
       res.status(200).json(todo);
       return;
     }
     next(new TodoNotFoundError(id));
   },
 
-  delete: (req, res, next) => {
+  delete: async (req, res, next) => {
     const id = req.params.id;
-    const todo = todos.find((todo) => todo.id == id);
+    const condition = { _id: id }
+    const todo = await Todo.findOneAndDelete(condition);
 
     if (todo) {
-      const index = todos.indexOf(todo);
-      todos.splice(index, 1);
-      res.status(200).json(todo);
-      return;
+      return res.status(200).json(user);
     }
-    next(new TodoNotFoundError());
+    next(new TodoNotFoundError(id));
   },
 };
